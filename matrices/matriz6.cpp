@@ -17,7 +17,6 @@ int ** crear_matriz (int f, int c){
 void llenar (int ** mat, int f, int c){
     for (int i = 0; i < f; i++){
         for (int j = 0; j < c; j++){
-          //  cin >> b;
             mat[i][j] = 10;//rand()%10;
             }
         }
@@ -33,48 +32,27 @@ void imprimir (int ** mat, int f, int c){
     }
 }
 
-int min(int a, int b)
-{
-    if(a < b) return a;
-    return b;
-}
 
 int ** multiplicacion (int ** a, int ** b, int f, int c){
  int ** nuevo = crear_matriz(f,c);
-    for (int i = 0; i < f; i++) {
-        for (int j = 0; j < c; j++) {
-            nuevo[i][j]=0;
-        }
-    }
    //cout<<"Multiplicacion"<<endl;
-    unsigned t0,t1;
-    t0 = clock();
-    int jump=200;
-    for(int ii = 0; ii < f; ii+=jump)
-        {
-            for(int jj = 0; jj < c; jj += jump)
-            {
-                for(int kk = 0; kk < f; kk += jump)
-                {
-                    for(int i = ii; i < min(ii+jump,f); i++)
-                    {
-                        for(int j = jj; j < min(jj+jump,f); j++)
-                        {
-                            for(int k = kk; k < min(kk+jump,f); k++)
-                            {
+    int bloque=4;
+    for(int ii = 0; ii < f; ii+=bloque){
+            for(int jj = 0; jj < c; jj += bloque){
+                for(int kk = 0; kk < f; kk += bloque){
+                    for(int i = ii; i < min(ii+bloque,f); i++){
+                        for(int j = jj; j < min(jj+bloque,f); j++){
+                            for(int k = kk; k < min(kk+bloque,f); k++){
                                 nuevo[i][j] += a[i][k] * b[k][j];
                             }
-
                         }
                     }
                 }
             }
-        }
-//imprimir(nuevo,f,c);
+        } 
+return nuevo;
 
-    t1=clock();
-    double time = (double(t1-t0)/CLOCKS_PER_SEC);
-    cout << endl <<  "tiempo  " << time << endl;
+//imprimir(nuevo,f,c);
 
 }
 
@@ -82,7 +60,7 @@ int ** multiplicacion (int ** a, int ** b, int f, int c){
 
 int main()
 {
-int f,c;
+    int f,c;
     cout <<"ingresar filas " << endl;
     cin >> f;
     cout <<"ingresar columnas " << endl;
@@ -90,14 +68,22 @@ int f,c;
     int ** a = crear_matriz(f,c);
     int ** b = crear_matriz(f,c);
     llenar(a,f,c);
-    //imprimir(a,f,c);
-    cout << endl;
     llenar(b,f,c);
+    clock_t t0;
+    clock_t t1;
+    double tiempo;    
+    srand(time(0));    
+    //imprimir(a,f,c);
     //imprimir(b,f,c);
-    int ** mt = multiplicacion(a,b,f,c);
-
-
-
+    int ** mt;
+    t0 = clock();
+    mt = multiplicacion(a,b,f,c);
+    t1 = clock();
+    tiempo = ((double)(t1 - t0 )) / CLOCKS_PER_SEC;
+    cout<<endl;
+    
+    cout<<" El tiempo que demora es: "<< tiempo << endl;
+ 
     return 0;
 
 }
