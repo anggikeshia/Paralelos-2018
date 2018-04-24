@@ -8,9 +8,9 @@ void Read_vector(double local_a[], int local_n, int n, char vec_name[], int my_r
 
   if(my_rank == 0){
     a = malloc(n*sizeof(double));
-    printf("Ingresa la matriz %s\n", vec_name);
+    //printf("Ingresa la matriz %s\n", vec_name);
     for(i = 0; i < n; i++)
-      {scanf("%lf", &a[i]);}
+      {a[i]=4;}
      MPI_Scatter(a, local_n, MPI_DOUBLE, local_a, local_n, MPI_DOUBLE,0,comm);
      free(a);
     
@@ -28,9 +28,9 @@ void Print_vector(double local_b[], int local_n, int n, char title[], int my_ran
   if(my_rank == 0){
     b = malloc(n*sizeof(double));
     MPI_Gather(local_b, local_n, MPI_DOUBLE,b,local_n, MPI_DOUBLE,0,comm);
-    printf("%s\n", title);
+    //printf("%s\n", title);
     for(i = 0; i < n; i++){
-      printf("%f ", b[i]);
+     // printf("%f ", b[i]);
     }
     printf("\n");
     free(b);
@@ -61,7 +61,7 @@ int main(){
       int comm_sz;
       int my_rank;  
       double start,finish;
-      int n=3,m=3, local_n,local_m;
+      int n=500,m=500, local_n,local_m;
       MPI_Init(NULL,NULL);
       MPI_Comm_size(MPI_COMM_WORLD, &comm_sz);
       MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
@@ -76,7 +76,9 @@ int main(){
         Print_vector(local_y,local_m,m,"y", my_rank,MPI_COMM_WORLD);
       printf("Proc %d > Elapsed time = %e seconds\n", my_rank, finish-start);
      MPI_Finalize();
+
   
+
 
 return 0;
 }

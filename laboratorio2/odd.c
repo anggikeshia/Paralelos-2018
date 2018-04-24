@@ -8,12 +8,15 @@ int mostrarM(double *matriz, int fila, int columna)
     {
     for (int y = 0; y < columna; y++) 
     {
-        printf("%7g ",matriz[x*columna+y]);
+        printf(" %7g ",matriz[x*columna+y]);
     }
     printf("\n");
     }
     return 0;
 }
+
+
+
 void OddE_Sort(double *vector, int tam)
 {
   int acabo = 0, i;
@@ -43,6 +46,8 @@ void OddE_Sort(double *vector, int tam)
     }
   }
 }
+
+
 void llenarM(double *matrix,int fila, int columna)
 {
     for (int i=0;i<(fila*columna);i++) 
@@ -51,6 +56,9 @@ void llenarM(double *matrix,int fila, int columna)
     }
 
 }
+
+
+
 void Menores(double* My_Vector, double* temp1, double* temp2,int tamB) 
 {
    
@@ -69,6 +77,8 @@ void Menores(double* My_Vector, double* temp1, double* temp2,int tamB)
    }
    memcpy(My_Vector, temp2, tamB*sizeof(double));
 }
+
+
 void Mayores(double* My_Vector,double* temp1,double* temp2,int tamB) 
 {
    for(int i=tamB-1,j=tamB-1,k=tamB-1;i >= 0;i--) 
@@ -86,9 +96,12 @@ void Mayores(double* My_Vector,double* temp1,double* temp2,int tamB)
    }
    memcpy(My_Vector,temp2,tamB*sizeof(double));
 }
+
+
+
 int main(int argc, char **argv)
 {
-  double start_time, end_time;
+  double start, finish;
   int my_rank, comm_sz;
   MPI_Init(&argc, &argv);
   MPI_Comm_size(MPI_COMM_WORLD, &comm_sz);
@@ -102,7 +115,9 @@ int main(int argc, char **argv)
   llenarM(My_Vector,1,tamB);
   mostrarM(My_Vector,1,tamB);
   printf("\n");
-  OddE_Sort(My_Vector,tamB);
+  start = MPI_Wtime();
+    OddE_Sort(My_Vector,tamB);
+  finish = MPI_Wtime();
   double *temp1, *temp2;
   int Com_Par;  
   int Com_Impar;
@@ -152,6 +167,8 @@ int main(int argc, char **argv)
   MPI_Gather(My_Vector,tamB,MPI_DOUBLE,Ordenado,tamB,MPI_DOUBLE,0,MPI_COMM_WORLD);
   if(my_rank==0)
     mostrarM(Ordenado,1,tamB*comm_sz);
+
+printf("Proc %d > Elapsed time = %e seconds\n", my_rank, finish-start);
   MPI_Finalize();  
 	return 0;
 }
