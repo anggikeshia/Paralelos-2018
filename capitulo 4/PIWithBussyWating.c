@@ -28,7 +28,7 @@ void* Thread_sum(void* rank){
   }
 
   while(flag != my_rank);
-  sum += my_sum;
+  sum += my_sum; //seccion critica
   flag = (flag+1) % thread_count;
 
   return NULL;

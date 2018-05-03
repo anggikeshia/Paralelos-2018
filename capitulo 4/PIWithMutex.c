@@ -27,9 +27,9 @@ void* Thread_sum(void* rank){
     my_sum += factor/(2*i+1);
   }
 
-  pthread_mutex_lock(&mutex);
+  pthread_mutex_lock(&mutex);  //accesar a la seccion critica
   sum += my_sum;
-  pthread_mutex_unlock(&mutex);
+  pthread_mutex_unlock(&mutex); //terminar de ejecutar el codigo en la seccion critica
 
   return NULL;
 
